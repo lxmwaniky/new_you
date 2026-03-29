@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/app_state.dart';
 import '../../../main.dart';
 
 class DashboardGrid extends StatelessWidget {
   const DashboardGrid({super.key});
+
+  void _showComingSoon(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        title: const Text('Coming Soon', style: TextStyle(fontWeight: FontWeight.bold)),
+        content: const Text(
+          'We are building a supportive space for you to connect with others on the same journey. Stay tuned!',
+          style: TextStyle(height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Exciting!'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +71,28 @@ class DashboardGrid extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            _BentoSection(
-              title: 'Active Goals',
-              value: '${appState.goals.length}',
-              icon: Icons.stars_rounded,
-              color: Colors.deepPurpleAccent,
-              onTap: () => context.push('/account/goals'),
+            Row(
+              children: [
+                Expanded(
+                  child: _BentoSection(
+                    title: 'Goals',
+                    value: '${appState.goals.length}',
+                    icon: Icons.stars_rounded,
+                    color: Colors.deepPurpleAccent,
+                    onTap: () => context.push('/account/goals'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _BentoSection(
+                    title: 'Community',
+                    value: 'Join',
+                    icon: Icons.groups_rounded,
+                    color: Colors.indigoAccent,
+                    onTap: () => _showComingSoon(context),
+                  ),
+                ),
+              ],
             ),
           ],
         );
@@ -106,9 +143,7 @@ class _BentoSection extends StatelessWidget {
           borderRadius: BorderRadius.circular(32),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
-            child: isLarge
-                ? _buildLargeLayout(context)
-                : _buildSmallLayout(context),
+            child: isLarge ? _buildLargeLayout(context) : _buildSmallLayout(context),
           ),
         ),
       ),
@@ -126,9 +161,9 @@ class _BentoSection extends StatelessWidget {
             Text(
               title,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -137,19 +172,19 @@ class _BentoSection extends StatelessWidget {
                 Text(
                   value,
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                    color: color,
-                    letterSpacing: -2,
-                  ),
+                        fontWeight: FontWeight.w900,
+                        color: color,
+                        letterSpacing: -2,
+                      ),
                 ),
                 if (unit != null) ...[
                   const SizedBox(width: 8),
                   Text(
                     unit!,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.bold,
-                    ),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ],
@@ -177,17 +212,17 @@ class _BentoSection extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: Theme.of(context).colorScheme.onSurface,
-            letterSpacing: -1,
-          ),
+                fontWeight: FontWeight.w900,
+                color: Theme.of(context).colorScheme.onSurface,
+                letterSpacing: -1,
+              ),
         ),
         Text(
           title,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontWeight: FontWeight.bold,
-          ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.bold,
+              ),
         ),
       ],
     );
